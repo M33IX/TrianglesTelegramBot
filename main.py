@@ -16,7 +16,6 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     text = update.message.text
     await distribute(text, update, context)
-    #update.message.reply_text(f'Вы нажали кнопку: {text}')
 
 async def distribute(input: str, update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     match(input):
