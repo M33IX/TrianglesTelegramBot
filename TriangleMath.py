@@ -74,8 +74,22 @@ class Triangle:
     
     def bisectrix(self) -> tuple[float, float, float]:
         """Вычилсяет биссектрисы треугольника"""
-        s = self.area() / 2
-        bisectorA = (2 / (self.sideB + self.sideC)) * math.sqrt(self.sideB * self.sideC * s * (s - self.sideA))
-        bisectorB = (2 / (self.sideA + self.sideC)) * math.sqrt(self.sideA * self.sideC * s * (s - self.sideB))
-        bisectorC = (2 / (self.sideA + self.sideB)) * math.sqrt(self.sideA * self.sideB * s * (s - self.sideC))
+        s = (self.perimeter() / 2)
+        bisectorA = (2 / (self.sideB + self.sideC)) * math.sqrt((self.sideB * self.sideC) * s * (s - self.sideA))
+        bisectorB = (2 / (self.sideA + self.sideC)) * math.sqrt((self.sideA * self.sideC) * s * (s - self.sideB))
+        bisectorC = (2 / (self.sideA + self.sideB)) * math.sqrt((self.sideA * self.sideB) * s * (s - self.sideC))
         return (bisectorA, bisectorB, bisectorC)
+    
+    def toString(self) -> str:
+        """Формирует полную информацию о треугольнике"""
+        result = ""
+        result += f"Стороны трегольника (A, B, C) ({self.sideA:.2f}, {self.sideB:.2f}, {self.sideC:.2f})\n"
+        result += f"Углы треугольника (A, B, C) ({self.angleA:.2f}, {self.angleB:.2f}, {self.angleC:.2f})\n"
+        result += f"Тип треугольника {self.type()}\n"
+        result += f"Периметр треугольника {self.perimeter():.2f}\n"
+        result += f"Площадь треугольника {self.area():.2f}\n"
+        result += f"Высоты треугольника (A, B, C) {self.heights()}\n"
+        result += f"Медианы треугольника (A, B, C) {self.medians()}\n"
+        result += f"Биссектрисы треугольника (A, B, C) {self.bisectrix()}\n"
+        return result
+        
