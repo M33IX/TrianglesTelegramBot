@@ -11,34 +11,30 @@ logging.basicConfig(
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     #await context.bot.send_message(chat_id=update.effective_chat.id, text="I'm a bot, please talk to me!")
     user = update.message.from_user
-    await update.message.reply_text(f"Здарова пидр {user.first_name}")
-
-async def buttons(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    try:
-        count = int(context.args[0])
-    except (IndexError, ValueError):
-        await update.message.reply_text('Пожалуйста, укажите количество кнопок после команды /buttons.')
-        return
-
-    keyboard = []
-    for i in range(count):
-        keyboard.append([KeyboardButton(f'Button {i+1}')])
-
-    reply_markup = ReplyKeyboardMarkup(keyboard, resize_keyboard=False, one_time_keyboard=False)
-    await update.message.reply_text('Ваши кнопки:', reply_markup=reply_markup)
-
+    await update.message.reply_text(f"Hello {user.first_name}")
 
 async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     text = update.message.text
-    await update.message.reply_text(f'Вы нажали кнопку: {text}')
+    await distribute(text, update, context)
+    #update.message.reply_text(f'Вы нажали кнопку: {text}')
+
+async def distribute(input: str, update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    match(input):
+        case "Button 1":
+            await sendMessage("lorem ipsum", update, context)
+        case "Button 2":
+            await sendMessage("sample text", update, context)
+        case _:
+            await sendMessage("error", update, context)            
+
+async def sendMessage(message: str, update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    await update.message.reply_text(message)
 
 if __name__ == '__main__':
     application = ApplicationBuilder().token('7481543119:AAHwWVLmmJUh_JiStOD2Kz5s198kZ-DaylQ').build()
     
     start_handler = CommandHandler('start', start)
-    buttons_handler = CommandHandler('buttons', buttons)
     application.add_handler(start_handler)
-    application.add_handler(buttons_handler)
     application.add_handler(MessageHandler(filters.TEXT & ~(filters.COMMAND), button_callback))
     
     application.run_polling()
